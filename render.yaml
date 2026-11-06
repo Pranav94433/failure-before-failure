@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: failure-before-failure-api
+    runtime: python
+    plan: starter
+    buildCommand: python -m pip install -r requirements.txt
+    startCommand: python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: failure-before-failure-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: DATABASE_PATH
+        value: /var/data/failure_before_failure.db
